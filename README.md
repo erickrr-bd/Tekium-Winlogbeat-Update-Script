@@ -5,17 +5,15 @@ It's a tool that updates the version of the Winlogbeat agent (Elastic) on Window
 Born from the need to have a tool that is easy to run and use. Ideal if the automated and massive update of Winlogbeat is required in your organization.
 
 # Characteristics
-- Search for VISA, AMEX and MASTER CARD card numbers (based on regular expressions)
-- Shows the first five matches of each file
-- Masks the first 12 characters of the card number, for security reasons
-- Generates a log file with the search results
-- Shows the progress of the search on the screen
+- It's only necessary to run the tool in the domain controller
 
 # Requirements
-- Access to the domain controller with administrator user.
+- Access to the domain controller.
 - PowerShell (A recent version is recommended)
 - PowerShell Console (Executed with administrator permissions)
 - Script execution enabled (Otherwise, run `Set-ExecutionPolicy Unrestricted`)
+- WinRM
+- Communication through port 5985
 
 # Running
 
