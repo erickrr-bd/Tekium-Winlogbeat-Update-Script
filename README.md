@@ -27,7 +27,7 @@ optional arguments:
 
 By default, the script takes the hostnames from the "hosts_update.txt" file. Both the Winlogbeat folder and the file with the hostnames must be at the same directory level as the update script.
 
-This can be changed using the parameters: "hosts_update.txt", where the name of the file from which the hostnames are read is indicated.
+This can be changed using the parameter: "hosts_file_name", where the name of the file from which the hostnames are read is indicated.
 
 For example:
 
