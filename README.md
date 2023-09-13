@@ -5,47 +5,65 @@ It's a tool that updates the version of the Winlogbeat agent (Elastic) on Window
 Born from the need to have a tool that is easy to run and use. Ideal if the automated and massive update of Winlogbeat is required in your organization.
 
 # Characteristics
-- It's only necessary to run the tool in the domain controller
+- Mass update of the Winlogbeat agent remotely using the domain controller
+- Generate a log file with the update process described.
 
 # Requirements
 - Access to the domain controller.
 - PowerShell (A recent version is recommended)
 - PowerShell Console (Executed with administrator permissions)
 - Script execution enabled (Otherwise, run `Set-ExecutionPolicy Unrestricted`)
-- WinRM
-- Communication through port 5985
+- WinRM service enabled
+- Port 5985 open
 
 # Running
 
-By default, the script looks in C:\ and files with the extension txt, csv, and log. 
+```
+usage: ./Tekium_Winlogbeat_Updgrade_Script.ps1 [-hosts_file_name]
 
-This can be changed using the parameters: "path_search", where the path where the search will be performed (recursively) is indicated. The other is "filters" where the file types where the PANs will be searched are indicated, these must be specified as follows: '*.txt', '*.docx', '*.xlsx' (separated by commas).
+optional arguments:
+  -hosts_file_name       Hostnames file name (default: hosts_update.txt)
+```
+
+By default, the script takes the hostnames from the "hosts_update.txt" file. Both the Winlogbeat folder and the file with the hostnames must be at the same directory level as the update script.
+
+This can be changed using the parameters: "hosts_update.txt", where the name of the file from which the hostnames are read is indicated.
 
 For example:
 
-`.\Tekium_PAN_Hunter_Script.ps1 -path_search “C:\Users” -filters ‘*.log’, ‘*.txt’, ‘*.csv’, ‘*.docx’, ‘*.xlsx’, ‘*.xls’, ‘*.doc’`
+`.\Tekium_Winlogbeat_Updgrade_Script.ps1 -hosts_file_name “archivo_hostnames.txt"`
+
+The structure of the file with the hostsnames must be the following. It is recommended to use hostnames instead of IP addresses, this way you avoid entering authentication credentials.
+
+```
+HOST1
+HOST2
+HOST3
+HOSTWINDOWS
+BDWINDOWS
+DEVWINDOWS
+```
 
 # Example output
 
 ```
 -------------------------------------------------------------------------------------
 Copyright©Tekium 2023. All rights reserved.
-Author: Erick Roberto Rodriguez Rodriguez
+Author: Erick Roberto Rodríguez Rodríguez
 Email: erodriguez@tekium.mx, erickrr.tbd93@gmail.com
-GitHub: https://github.com/erickrr-bd/Tekium-PAN-Hunter-Script
-Tekium PAN Hunter Script v1.1.2 for Windows - June 2023
+GitHub: https://github.com/erickrr-bd/Tekium-Winlogbeat-Update-Script
+Tekium Winlogbeat Upgrade Script v1.3 - September 2023
 -------------------------------------------------------------------------------------
-Hostname: LAPTOP-NUDA94QT
-Path: C:\Users\reric\Downloads
-Filters: *.log *.txt *.csv *.docx *.xlsx *.xls *.doc
-
- XXXXXXXXXXXX0004  MASTER CARD
- XXXXXXXXXXXX0055  MASTER CARD
- XXXXXXXXXXXX0006  MASTER CARD
- XXXXXXXXXXXX0009  VISA
- XXXXXXXXXXXX0004  VISA
-
-Possible PAN's found in: C:\Users\reric\Downloads\Nuevo Documento de texto.txt.FullName
+Hosts File Name: hosts_update.txt
+12/09/2023 06:25:59 p. m. Connection established with the server: HOST1
+12/09/2023 06:26:01 p. m. Stopping winlogbeat service on the server: HOST1
+12/09/2023 06:26:06 p. m. Winlogbeat service status: Stopped on server HOST1
+12/09/2023 06:26:08 p. m. Previous version of Winlogbeat found on the server: HOST1
+12/09/2023 06:26:13 p. m. Current winlogbeat deleted on server: HOST1
+12/09/2023 06:26:15 p. m. Copying new version of Winlogbeat to the server: HOST1
+12/09/2023 06:26:20 p. m. Winlogbeat copied to server: HOST1
+12/09/2023 06:26:22 p. m. Starting the Winlogbeat service on the server: HOST1
+12/09/2023 06:26:28 p. m. Winlogbeat service status: Running on server HOST1
 ```
 
 # Commercial Support
