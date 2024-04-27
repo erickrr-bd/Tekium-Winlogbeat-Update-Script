@@ -19,7 +19,7 @@ Write-host -Object "Copyright©Tekium 2024. All rights reserved." -ForegroundCol
 Write-host -Object "Author: Erick Roberto Rodríguez Rodríguez" -ForegroundColor green
 Write-host -Object "Email: erodriguez@tekium.mx, erickrr.tbd93@gmail.com" -ForegroundColor green
 Write-Host -Object "GitHub: https://github.com/erickrr-bd/Tekium-Winlogbeat-Update-Script" -ForegroundColor green
-Write-host -Object "Tekium-Winlogbeat-Upgrade-Script v1.4 - April 2024" -ForegroundColor green
+Write-host -Object "Tekium-Winlogbeat-Update-Script v1.4 - April 2024" -ForegroundColor green
 Write-Host -Object "-------------------------------------------------------------------------------------" -ForegroundColor Yellow
 Write-Output -InputObject "`nExecution start date: $(Get-Date)"
 Write-Output -InputObject "Hosts File: $hosts_file`n"
@@ -29,7 +29,7 @@ Write-Output -InputObject "Hosts File: $hosts_file`n"
 "Author: Erick Roberto Rodríguez Rodríguez" | Out-File -FilePath $log -Append
 "Email: erodriguez@tekium.mx, erickrr.tbd93@gmail.com" | Out-File -FilePath $log -Append
 "GitHub: https://github.com/erickrr-bd/Tekium-Winlogbeat-Update-Script" | Out-File -FilePath $log -Append
-"Tekium-Winlogbeat-Upgrade-Script v1.4 - April 2024" | Out-File -FilePath $log -Append
+"Tekium-Winlogbeat-Update-Script v1.4 - April 2024" | Out-File -FilePath $log -Append
 "-------------------------------------------------------------------------------------" | Out-File -FilePath $log -Append
 "`nExecution start date: $(Get-Date)" | Out-File -FilePath $log -Append
 "Hosts File: $hosts_file`n" | Out-File -FilePath $log -Append
