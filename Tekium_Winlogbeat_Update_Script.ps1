@@ -4,7 +4,7 @@ PowerShell script that installs/updates Winlogbeat via DC and WinRM.
 .PARAMETER hosts_file
 Name of the file with the list of hosts.
 .EXAMPLE
-PS> .\Tekium_Winlogbeat_Updgrade_Script.ps1 -hosts_file "hosts_file_update.txt"
+PS> .\Tekium_Winlogbeat_Update_Script.ps1 -hosts_file "hosts_file_update.txt"
 .SYNOPSIS
 PowerShell script that installs/updates the Winlogbeat agent via DC.
 #>
