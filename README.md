@@ -1,12 +1,19 @@
 # Tekium-Winlogbeat-Update-Script v1.3
 
+Winlogbeat reads from one or more event logs using Windows APIs, filters the events based on user-configured criteria, then sends the event data to the configured outputs (Elasticsearch or Logstash).
+
+For more information:
+
+[https://www.elastic.co/es/beats/winlogbeat](https://www.elastic.co/guide/en/beats/winlogbeat/current/_winlogbeat_overview.html)
+
 It's a tool that updates the version of the Winlogbeat agent (Elastic) on Windows systems through the domain controller.
 
 Born from the need to have a tool that is easy to run and use. Ideal if the automated and massive update of Winlogbeat is required in your organization.
 
 # Characteristics
-- Mass update of the Winlogbeat agent remotely using the domain controller
-- Generate a log file with the update process described.
+- Remote update via domain controller
+- If the service doesn't exist, create it (Winlogbeat installation)
+- Generate a log file with the update process described
 
 # Requirements
 - Access to the domain controller.
