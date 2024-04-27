@@ -1,4 +1,4 @@
-# Tekium-Winlogbeat-Update-Script v1.3
+# Tekium-Winlogbeat-Update-Script v1.4
 
 Winlogbeat reads from one or more event logs using Windows APIs, filters the events based on user-configured criteria, then sends the event data to the configured outputs (Elasticsearch or Logstash).
 
@@ -6,39 +6,38 @@ For more information:
 
 [https://www.elastic.co/es/beats/winlogbeat](https://www.elastic.co/guide/en/beats/winlogbeat/current/_winlogbeat_overview.html)
 
-It's a tool that updates the version of the Winlogbeat agent (Elastic) on Windows systems through the domain controller.
+It's a tool that installs/updates the Winlogbeat agent (Elastic) on Windows systems through the domain controller and WinRM.
 
-Born from the need to have a tool that is easy to run and use. Ideal if the automated and massive update of Winlogbeat is required in your organization.
+Born from the need to have a tool that is easy to run and use. Ideal if the automated and massive installation/update of Winlogbeat is required in your organization.
 
 # Characteristics
-- Remote update via domain controller
-- If the service doesn't exist, create it (Winlogbeat installation)
-- Generate a log file with the update process described
+- Remote installation/update via domain controller and WinRM
+- Generate a log file with the process
 
 # Requirements
-- Access to the domain controller.
+- Domain Controller server (DC)
 - PowerShell (A recent version is recommended)
 - PowerShell Console (Executed with administrator permissions)
 - Script execution enabled (Otherwise, run `Set-ExecutionPolicy Unrestricted`)
-- WinRM service enabled
-- Port 5985 open
+- WinRM service enabled (DC and clients)
+- Port 5985 open (DC and clients)
 
 # Running
 
 ```
-usage: ./Tekium_Winlogbeat_Updgrade_Script.ps1 [-hosts_file_name]
+usage: ./Tekium_Winlogbeat_Updgrade_Script.ps1 [-hosts_file]
 
 optional arguments:
-  -hosts_file_name       Hostnames file name (default: hosts_update.txt)
+  -hosts_file       Hostnames file name (default: hosts_update.txt)
 ```
 
-By default, the script takes the hostnames from the "hosts_update.txt" file. Both the Winlogbeat folder and the file with the hostnames must be at the same directory level as the update script.
+By default, the script takes the hostnames from the "hosts_update.txt" file. Both the Winlogbeat folder and the file with the hostnames must be at the same directory level as the script.
 
-This can be changed using the parameter: "hosts_file_name", where the name of the file from which the hostnames are read is indicated.
+This can be changed using the parameter: "hosts_file", where the name of the file or path from which the hostnames are read is indicated.
 
 For example:
 
-`.\Tekium_Winlogbeat_Updgrade_Script.ps1 -hosts_file_name “archivo_hostnames.txt"`
+`.\Tekium_Winlogbeat_Updgrade_Script.ps1 -hosts_file “archivo_hostnames.txt"`
 
 The structure of the file with the hostsnames must be the following. It is recommended to use hostnames instead of IP addresses, this way you avoid entering authentication credentials.
 
