@@ -25,7 +25,7 @@ Born from the need to have a tool that is easy to run and use. Ideal if the auto
 # Running
 
 ```
-usage: ./Tekium_Winlogbeat_Updgrade_Script.ps1 [-hosts_file]
+usage: ./Tekium_Winlogbeat_Update_Script.ps1 [-hosts_file]
 
 optional arguments:
   -hosts_file       Hostnames file name (default: hosts_update.txt)
@@ -37,9 +37,9 @@ This can be changed using the parameter: "hosts_file", where the name of the fil
 
 For example:
 
-`.\Tekium_Winlogbeat_Updgrade_Script.ps1 -hosts_file “archivo_hostnames.txt"`
+`.\Tekium_Winlogbeat_Update_Script.ps1 -hosts_file “archivo_hostnames.txt"`
 
-The structure of the file with the hostsnames must be the following. It is recommended to use hostnames instead of IP addresses, this way you avoid entering authentication credentials.
+The file's structure with the hostsnames must be the following. It's recommended to use hostnames instead of IP addresses, this way you avoid entering authentication credentials.
 
 ```
 HOST1
@@ -54,22 +54,28 @@ DEVWINDOWS
 
 ```
 -------------------------------------------------------------------------------------
-Copyright©Tekium 2023. All rights reserved.
+Copyright©Tekium 2024. All rights reserved.
 Author: Erick Roberto Rodríguez Rodríguez
 Email: erodriguez@tekium.mx, erickrr.tbd93@gmail.com
 GitHub: https://github.com/erickrr-bd/Tekium-Winlogbeat-Update-Script
-Tekium Winlogbeat Upgrade Script v1.3 - September 2023
+Tekium-Winlogbeat-Upgrade-Script v1.4 - April 2024
 -------------------------------------------------------------------------------------
-Hosts File Name: hosts_update.txt
-12/09/2023 06:25:59 p. m. Connection established with the server: HOST1
-12/09/2023 06:26:01 p. m. Stopping winlogbeat service on the server: HOST1
-12/09/2023 06:26:06 p. m. Winlogbeat service status: Stopped on server HOST1
-12/09/2023 06:26:08 p. m. Previous version of Winlogbeat found on the server: HOST1
-12/09/2023 06:26:13 p. m. Current winlogbeat deleted on server: HOST1
-12/09/2023 06:26:15 p. m. Copying new version of Winlogbeat to the server: HOST1
-12/09/2023 06:26:20 p. m. Winlogbeat copied to server: HOST1
-12/09/2023 06:26:22 p. m. Starting the Winlogbeat service on the server: HOST1
-12/09/2023 06:26:28 p. m. Winlogbeat service status: Running on server HOST1
+
+Execution start date: 04/27/2024 12:45:24
+Hosts File: hosts.txt
+
+27/04/2024 12:45:24 p. m. INFO - File found: hosts.txt
+27/04/2024 12:45:38 p. m. INFO - Connection established with the server: WIN-9ACUHHQQNHM
+27/04/2024 12:45:38 p. m. INFO - Winlogbeat service exists on server: WIN-9ACUHHQQNHM
+27/04/2024 12:45:40 p. m. INFO - Status: Stopped on server: WIN-9ACUHHQQNHM
+27/04/2024 12:45:40 p. m. INFO - Winlogbeat found on server: WIN-9ACUHHQQNHM
+27/04/2024 12:45:40 p. m. INFO - Winlogbeat removed from server: WIN-9ACUHHQQNHM
+27/04/2024 12:45:51 p. m. INFO - Winlogbeat installed/updated on server: WIN-9ACUHHQQNHM
+27/04/2024 12:45:51 p. m. INFO - Status: Running on server: WIN-9ACUHHQQNHM
+27/04/2024 12:45:53 p. m. ERROR - Failed to connect to server: PRUEBA
+27/04/2024 12:45:53 p. m. ERROR - <f:WSManFault xmlns:f="http://schemas.microsoft.com/wbem/wsman/1/wsmanfault" Code="2150859193" Machine="WIN-2RER8RSOGA2.Tekium.com"><f:Message>El cliente WinRM no puede procesar la solicitud porque no puede resolverse el nombre de servidor. </f:Message></f:WSManFault>
+
+Execution end date: 04/27/2024 12:45:54
 ```
 
 # Commercial Support
