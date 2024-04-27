@@ -49,6 +49,18 @@ HOSTWINDOWS
 BDWINDOWS
 DEVWINDOWS
 ```
+# Generate executable file on Windows systems
+
+It's possible to generate an executable for Windows systems (.exe) using the ps2exe tool. To do this, you must first install the plugin:
+
+`Install-Module ps2exe`
+
+To generate the executable you must use the tool as follows:
+
+`ps2exe .\Tekium_Winlogbeat_Update_Script.ps1 .\Tekium_Winlogbeat_Update_Script.exe`
+
+For more information:
+[ps2exe tool](https://github.com/MScholtes/PS2EXE)
 
 # Example output
 
@@ -58,7 +70,7 @@ Copyright©Tekium 2024. All rights reserved.
 Author: Erick Roberto Rodríguez Rodríguez
 Email: erodriguez@tekium.mx, erickrr.tbd93@gmail.com
 GitHub: https://github.com/erickrr-bd/Tekium-Winlogbeat-Update-Script
-Tekium-Winlogbeat-Upgrade-Script v1.4 - April 2024
+Tekium-Winlogbeat-Update-Script v1.4 - April 2024
 -------------------------------------------------------------------------------------
 
 Execution start date: 04/27/2024 12:45:24
