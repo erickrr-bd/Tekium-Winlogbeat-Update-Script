@@ -4,7 +4,7 @@ PowerShell script that installs/updates Winlogbeat via DC and WinRM.
 .PARAMETER hosts_file
 Name of the file with the list of hosts.
 .EXAMPLE
-PS> .\Tekium_Winlogbeat_Update_Script.ps1 -hosts_file "hosts_file_update.txt"
+PS> .\Tekium_Winlogbeat_Updgrade_Script.ps1 -hosts_file "hosts_file_update.txt"
 .SYNOPSIS
 PowerShell script that installs/updates the Winlogbeat agent via DC.
 #>
@@ -19,7 +19,7 @@ Write-host -Object "Copyright©Tekium 2024. All rights reserved." -ForegroundCol
 Write-host -Object "Author: Erick Roberto Rodríguez Rodríguez" -ForegroundColor green
 Write-host -Object "Email: erodriguez@tekium.mx, erickrr.tbd93@gmail.com" -ForegroundColor green
 Write-Host -Object "GitHub: https://github.com/erickrr-bd/Tekium-Winlogbeat-Update-Script" -ForegroundColor green
-Write-host -Object "Tekium-Winlogbeat-Update-Script v1.4 - April 2024" -ForegroundColor green
+Write-host -Object "Tekium-Winlogbeat-Update-Script v1.4.1 - May 2024" -ForegroundColor green
 Write-Host -Object "-------------------------------------------------------------------------------------" -ForegroundColor Yellow
 Write-Output -InputObject "`nExecution start date: $(Get-Date)"
 Write-Output -InputObject "Hosts File: $hosts_file`n"
@@ -29,7 +29,7 @@ Write-Output -InputObject "Hosts File: $hosts_file`n"
 "Author: Erick Roberto Rodríguez Rodríguez" | Out-File -FilePath $log -Append
 "Email: erodriguez@tekium.mx, erickrr.tbd93@gmail.com" | Out-File -FilePath $log -Append
 "GitHub: https://github.com/erickrr-bd/Tekium-Winlogbeat-Update-Script" | Out-File -FilePath $log -Append
-"Tekium-Winlogbeat-Update-Script v1.4 - April 2024" | Out-File -FilePath $log -Append
+"Tekium-Winlogbeat-Upgrade-Script v1.4.1 - May 2024" | Out-File -FilePath $log -Append
 "-------------------------------------------------------------------------------------" | Out-File -FilePath $log -Append
 "`nExecution start date: $(Get-Date)" | Out-File -FilePath $log -Append
 "Hosts File: $hosts_file`n" | Out-File -FilePath $log -Append
@@ -52,19 +52,30 @@ else{
             Write-Output -InputObject "`nValidating Winlogbeat service on server: $hostname"
             $winlogbeat_service = Get-Service -ComputerName $hostname -Name winlogbeat -ErrorAction SilentlyContinue -ErrorVariable Err
             if($winlogbeat_service){
-                Write-Host -Object "`nWinlogbeat service exists on server: $hostname" -ForegroundColor Green
-                (Get-Date).ToString() + " INFO - Winlogbeat service exists on server: $hostname" | Out-File -FilePath $log -Append
+                Write-Host -Object "`nWinlogbeat's service exists on server: $hostname" -ForegroundColor Green
+                (Get-Date).ToString() + " INFO - Winlogbeat's service exists on server: $hostname" | Out-File -FilePath $log -Append
+                $service_status = (Get-Service -Name "winlogbeat" -ComputerName $hostname).status
+                Write-Output -InputObject "`nWinlogbeat's service is $service_status on server: $hostname"
                 Write-Output -InputObject "`nStopping Winlogbeat service on server: $hostname"
-                $winlogbeat_service | Set-Service -Status Stopped
-                $winlogbeat_service_status = $winlogbeat_service.status
-                Write-Host -Object "`nStatus: $winlogbeat_service_status on server: $hostname" -ForegroundColor Green
-                (Get-Date).ToString() + " INFO - Status: $winlogbeat_service_status on server: $hostname" | Out-File -FilePath $log -Append
+                Invoke-Command -ComputerName $hostname -ScriptBlock{
+                    Stop-Service -Name "winlogbeat" -Force
+                    Start-Sleep -Seconds 2
+                    $service_status = (Get-Service -Name "winlogbeat").status
+                    if($service_status -ne "Stopped"){
+                        Write-Host -Object "`nKilling Winlogbeat's service on server: $env:computerName" -ForegroundColor White
+                        $service_pid = (get-wmiobject win32_service | where { $_.name -eq 'winlogbeat'}).processId
+                        taskkill /pid $service_pid /f    
+                    }
+                } -ErrorAction SilentlyContinue -ErrorVariable Err
+                $service_status = (Get-Service -Name "winlogbeat" -ComputerName $hostname).status
+                Write-Host -Object "`nWinlogbeat's service is $service_status on server: $hostname" -ForegroundColor Green
+                (Get-Date).ToString() + " INFO - Winlogbeat's service is $service_status on server: $hostname" | Out-File -FilePath $log -Append
             }
             else{
-                Write-Host -Object "`nWinlogbeat service doesn't exist on server: $hostname" -ForegroundColor Yellow
-                (Get-Date).ToString() + " WARNING - Winlogbeat service doesn't exist on the server: $hostname" | Out-File -FilePath $log -Append
+                Write-Host -Object "`nWinlogbeat's service doesn't exist on server: $hostname" -ForegroundColor Yellow
+                (Get-Date).ToString() + " WARNING - Winlogbeat's service doesn't exist on server: $hostname" | Out-File -FilePath $log -Append
                 (Get-Date).ToString() + " WARNING - $Err" | Out-File -FilePath $log -Append
-                Write-Output -InputObject "`nCreating Winlogbeat service on server: $hostname"
+                Write-Output -InputObject "`nCreating Winlogbeat's service on server: $hostname"
                 Invoke-Command -ComputerName $hostname -ScriptBlock{
                     $workdir = "C:\Program Files\winlogbeat"
                     New-Service -name winlogbeat `
@@ -72,12 +83,12 @@ else{
                         -binaryPathName "`"$workdir\winlogbeat.exe`" --environment=windows_service -c `"$workdir\winlogbeat.yml`" --path.home `"$workdir`" --path.data `"$env:PROGRAMDATA\winlogbeat`" --path.logs `"$env:PROGRAMDATA\winlogbeat\logs`" -E logging.files.redirect_stderr=true"
                 } -ErrorAction SilentlyContinue -ErrorVariable Err
                 if(-not $Err){
-                    Write-Host -Object "`nWinlogbeat service created on server: $hostname" -ForegroundColor Green
-                    (Get-Date).ToString() + " INFO - Winlogbeat service created on server: $hostname" | Out-File -FilePath $log -Append
+                    Write-Host -Object "`nWinlogbeat's service created on server: $hostname" -ForegroundColor Green
+                    (Get-Date).ToString() + " INFO - Winlogbeat's service created on server: $hostname" | Out-File -FilePath $log -Append
                 }
                 else{
-                    Write-Host -Object "`nWinlogbeat not created on server: $hostname" -ForegroundColor Red
-                    (Get-Date).ToString() + " ERROR - Winlogbeat not created on server: $hostname" | Out-File -FilePath $log -Append
+                    Write-Host -Object "`nWinlogbeat's service not created on server: $hostname" -ForegroundColor Red
+                    (Get-Date).ToString() + " ERROR - Winlogbeat's service not created on server: $hostname" | Out-File -FilePath $log -Append
                     (Get-Date).ToString() + " ERROR - $Err" | Out-File -FilePath $log -Append
                 }
             }
@@ -87,16 +98,22 @@ else{
             if(Test-Path -Path $winlogbeat_path){
                 Write-Host -Object "`nWinlogbeat found on server: $hostname" -ForegroundColor Green
                 (Get-Date).ToString() + " INFO - Winlogbeat found on server: $hostname" | Out-File -FilePath $log -Append
-                Write-Output -InputObject "`nRemoving current Winlogbeat's version from server: $hostname"
-                Remove-Item -Path $winlogbeat_path -Force -Recurse -ErrorAction SilentlyContinue -ErrorVariable Err
-                if(-not $Err){
-                    Write-Host -Object "`nWinlogbeat removed from server: $hostname" -ForegroundColor Green
-                    (Get-Date).ToString() + " INFO - Winlogbeat removed from server: $hostname" | Out-File -FilePath $log -Append
+                $service_status = (Get-Service -Name "winlogbeat" -ComputerName $hostname).status
+                if($service_status -eq "Stopped"){
+                    Write-Output -InputObject "`nRemoving current Winlogbeat's version from server: $hostname"
+                    Remove-Item -Path $winlogbeat_path -Force -Recurse -ErrorAction SilentlyContinue -ErrorVariable Err
+                    if(-not $Err){
+                        Write-Host -Object "`nWinlogbeat removed from server: $hostname" -ForegroundColor Green
+                        (Get-Date).ToString() + " INFO - Winlogbeat removed from server: $hostname" | Out-File -FilePath $log -Append
+                    }
+                    else{
+                        Write-Host -Object "`nWinlogbeat not removed on server: $hostname" -ForegroundColor Red
+                        (Get-Date).ToString() + " ERROR - Winlogbeat not removed on server: $hostname" | Out-File -FilePath $log -Append
+                        (Get-Date).ToString() + " ERROR - $Err" | Out-File -FilePath $log -Append
+                    }
                 }
                 else{
-                    Write-Host -Object "`nWinlogbeat not removed on server: $hostname" -ForegroundColor Red
-                    (Get-Date).ToString() + " ERROR - Winlogbeat not removed on server: $hostname" | Out-File -FilePath $log -Append
-                    (Get-Date).ToString() + " ERROR - $Err" | Out-File -FilePath $log -Append
+                    Write-Host -Object "`nWinlogbeat's service isn't stopped on server: $hostname" -ForegroundColor Red
                 }
             }
             else{
@@ -114,12 +131,19 @@ else{
                 (Get-Date).ToString() + " ERROR - Winlogbeat not installed/updated on server: $hostname" | Out-File -FilePath $log -Append
                 (Get-Date).ToString() + " ERROR - $Err" | Out-File -FilePath $log -Append
             }
-            $winlogbeat_service = Get-Service -ComputerName $hostname -Name winlogbeat -ErrorAction SilentlyContinue -ErrorVariable Err
             Write-Output -InputObject "`nStarting Winlogbeat service on server: $hostname"
-            $winlogbeat_service | Set-Service -Status Running
-            $winlogbeat_service_status = $winlogbeat_service.status
-            Write-Host -Object "`nStatus: $winlogbeat_service_status on server: $hostname" -ForegroundColor Green
-            (Get-Date).ToString() + " INFO - Status: $winlogbeat_service_status on server: $hostname" | Out-File -FilePath $log -Append
+            Invoke-Command -ComputerName $hostname -ScriptBlock{
+                Start-Service -Name "winlogbeat"
+                Start-Sleep -Seconds 2
+            } -ErrorAction SilentlyContinue -ErrorVariable Err
+            $service_status = (Get-Service -Name "winlogbeat" -ComputerName $hostname).status
+            if ($service_status -eq "Running"){
+                Write-Host -Object "`nWinlogbeat's service is $service_status on server: $hostname" -ForegroundColor Green
+            }
+            else{
+                Write-Host -Object "`nWinlogbeat's service is $service_status on server: $hostname" -ForegroundColor Red   
+            }
+            (Get-Date).ToString() + " INFO - Winlogbeat's service is $service_status on server: $hostname" | Out-File -FilePath $log -Append
         }
         else{
             Write-Host -Object "`nFailed to connect to server: $hostname" -ForegroundColor Red
