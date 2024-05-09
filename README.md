@@ -1,4 +1,4 @@
-# Tekium-Winlogbeat-Update-Script v1.4
+# Tekium-Winlogbeat-Update-Script v1.4.1
 
 Winlogbeat reads from one or more event logs using Windows APIs, filters the events based on user-configured criteria, then sends the event data to the configured outputs (Elasticsearch or Logstash).
 
@@ -70,7 +70,7 @@ Copyright©Tekium 2024. All rights reserved.
 Author: Erick Roberto Rodríguez Rodríguez
 Email: erodriguez@tekium.mx, erickrr.tbd93@gmail.com
 GitHub: https://github.com/erickrr-bd/Tekium-Winlogbeat-Update-Script
-Tekium-Winlogbeat-Update-Script v1.4 - April 2024
+Tekium-Winlogbeat-Update-Script v1.4.1 - May 2024
 -------------------------------------------------------------------------------------
 
 Execution start date: 04/27/2024 12:45:24
